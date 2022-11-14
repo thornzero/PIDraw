@@ -1,4 +1,4 @@
-﻿Public Class frmMain
+﻿Public Class uxMainForm
 
     Private Const GRID_SPACING As Integer = 20
 
@@ -17,15 +17,17 @@
     Private m_X2 As Integer
     Private m_Y2 As Integer
 
+    'Private m_Line As pipe = New pipe()
+
     Private Sub saveSnapshot()
         Dim new_bitmap As Bitmap
 
         ' Make a new bitmap that fits the PictureBox.
-        new_bitmap = New Bitmap(picCanvas.Size.Width, picCanvas.Size.Height)
+        new_bitmap = New Bitmap(uxCanvas.Size.Width, uxCanvas.Size.Height)
         gfxBuffer = Graphics.FromImage(new_bitmap)
 
         ' Clear the new bitmap.
-        gfxBuffer.Clear(picCanvas.BackColor)
+        gfxBuffer.Clear(uxCanvas.BackColor)
 
         ' Draw the positioning grid.
         drawGrid(new_bitmap)
@@ -49,7 +51,7 @@
     ' Start drawing a rubberband line.
     Private Sub picCanvas_MouseDown(ByVal sender As Object,
     ByVal e As System.Windows.Forms.MouseEventArgs) Handles _
-    picCanvas.MouseDown
+    uxCanvas.MouseDown
         ' Do nothing if this isn'tthe left mouse button.
         If e.Button <> MouseButtons.Left Then Exit Sub
         m_Drawing = True
@@ -66,9 +68,9 @@
     End Sub
 
     ' Continue drawing the rubberband line.
-    Private Sub picCanvas_MouseMove(ByVal sender As Object,
+    Private Sub uxCanvas_MouseMove(ByVal sender As Object,
     ByVal e As System.Windows.Forms.MouseEventArgs) Handles _
-    picCanvas.MouseMove
+    uxCanvas.MouseMove
         ' Do nothing if we're not drawing.
         If Not m_Drawing Then Exit Sub
 
@@ -78,7 +80,7 @@
         snapToGrid(m_X2, m_Y2)
 
         ' Erase the previous line.
-        Dim gr As Graphics = picCanvas.CreateGraphics()
+        Dim gr As Graphics = uxCanvas.CreateGraphics()
         drawPicture(gr)
 
         ' Draw the new line directly on the PictureBox.
@@ -86,9 +88,9 @@
     End Sub
 
     ' Finish drawing the new line.
-    Private Sub picCanvas_MouseUp(ByVal sender As Object, ByVal _
+    Private Sub uxCanvas_MouseUp(ByVal sender As Object, ByVal _
     e As System.Windows.Forms.MouseEventArgs) Handles _
-    picCanvas.MouseUp
+    uxCanvas.MouseUp
         ' Do nothing if we're not drawing.
         If Not m_Drawing Then Exit Sub
         m_Drawing = False
@@ -98,7 +100,7 @@
         Pens.Blue, m_X1, m_Y1, m_X2, m_Y2)
 
         ' Redraw to show the new line.
-        drawPicture(picCanvas.CreateGraphics())
+        drawPicture(uxCanvas.CreateGraphics())
     End Sub
 
     ' Snap the point to the grid.
@@ -119,9 +121,9 @@
     End Sub
 
     ' Redraw the picture.
-    Private Sub picCanvas_Paint(ByVal sender As Object, ByVal e _
+    Private Sub uxCanvas_Paint(ByVal sender As Object, ByVal e _
     As System.Windows.Forms.PaintEventArgs) Handles _
-    picCanvas.Paint
+    uxCanvas.Paint
         drawPicture(e.Graphics)
     End Sub
 
@@ -133,7 +135,7 @@
 
     ' Make the new grid.
     Private Sub picCanvas_Resize(ByVal sender As Object, ByVal _
-    e As System.EventArgs) Handles picCanvas.Resize
+    e As System.EventArgs) Handles uxCanvas.Resize
         saveSnapshot()
     End Sub
 
